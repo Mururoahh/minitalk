@@ -1,5 +1,7 @@
 #*** VARIABLES ***#
 
+NAME					=	minitalk
+
 SERVER_NAME				=	server
 
 CLIENT_NAME				=	client
@@ -64,12 +66,14 @@ RM						=	rm -rf
 
 #*** RULES ***#
 
-all						:	$(DIR_OBJS)
+all						:	$(NAME)
+
+-include				$(DEPS)
+
+${NAME}					:	$(DIR_OBJS)
 						@$(MAKE) -C $(DIR_LIBFT)
 						@$(MAKE) $(SERVER_NAME)
 						@$(MAKE) $(CLIENT_NAME)
-
--include				$(DEPS)
 
 $(SERVER_NAME)			:	$(OBJS_SERVER)
 						$(CC) $(OBJS_SERVER) -o $(SERVER_NAME) $(LFLAGS)

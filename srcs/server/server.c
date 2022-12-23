@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hferraud <hferraud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mururoahh <mururoahh@student.42lyon.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:26:43 by hferraud          #+#    #+#             */
-/*   Updated: 2022/12/20 19:55:45 by hferraud         ###   ########lyon.fr   */
+/*   Updated: 2022/12/23 21:25:47 by mururoahh        ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,17 @@
 
 void	print_message(t_msg_info *msg)
 {
+	pid_t pid_tmp;
+	
+	pid_tmp = msg->pid;
 	write(1, msg->msg, msg->msg_size);
-	usleep(10000);
-	if (kill(msg->pid, SIGUSR2) == -1)
-		kill_error();
-	ft_printf("\nsig sended\n");
-	msg->pid = 0;
 	free(msg->msg);
-	//msg->msg = NULL;
-	msg->msg_size = 0;
-	msg->msg_index = 0;
-	msg->byte_pos = 0;
-	msg->bit_count = 0;
+	ft_bzero(msg, sizeof(t_msg_info));
+	if (kill(pid_tmp, SIGUSR2) == -1)
+		kill_error();
 }
 
-void	receive_size(unsigned char bit, t_msg_info *msg)
+void	receive_size(size_t bit, t_msg_info *msg)
 {
 	bit <<= msg->bit_count;
 	msg->msg_size |= bit;
@@ -38,8 +34,8 @@ void	receive_size(unsigned char bit, t_msg_info *msg)
 		msg->msg = malloc(msg->msg_size * sizeof(char));
 		if (msg->msg == NULL)
 			malloc_error();
+		ft_bzero(msg->msg, sizeof(msg->msg));
 	}
-	usleep(10000);
 	if (kill(msg->pid, SIGUSR1) == -1)
 		kill_error();
 }
@@ -52,8 +48,9 @@ void	receive_msg(unsigned char bit, t_msg_info *msg)
 	if (msg->byte_pos == 8)
 		msg->msg_index++;
 	msg->byte_pos %= 8;
-	usleep(10000);
-	if (kill(msg->pid, SIGUSR1) == -1)
+	if (msg->msg_index == msg->msg_size)
+		print_message(msg);
+	else if (kill(msg->pid, SIGUSR1) == -1)
 		kill_error();
 }
 
@@ -62,25 +59,28 @@ void	sig_listener(int sig, siginfo_t *info, void *uap)
 	static t_msg_info	msg_info;
 	unsigned char		bit;
 
-	uap = NULL;
+	(void)uap;
 	if (msg_info.pid == 0)
 	{
 		if (info->si_pid && info->si_code <= 0)
+		{
 			msg_info.pid = info->si_pid;
+			if (kill(msg_info.pid, SIGUSR1) == -1)
+				kill_error();
+			return ;
+		}
 	}
 	if (msg_info.pid == info->si_pid && info->si_code <= 0)
 	{
 		if (sig == SIGUSR1)
-			bit = 0;
-		else
 			bit = 1;
+		else
+			bit = 0;
 		if (msg_info.bit_count < 32)
 			receive_size(bit, &msg_info);
 		else
 		{
 			receive_msg(bit, &msg_info);
-			if (msg_info.msg_index == msg_info.msg_size)
-				print_message(&msg_info);	
 		}	
 	}
 }

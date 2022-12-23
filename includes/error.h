@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hferraud <hferraud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: mururoahh <mururoahh@student.42lyon.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 16:53:17 by hferraud          #+#    #+#             */
-/*   Updated: 2022/12/20 16:58:02 by hferraud         ###   ########lyon.fr   */
+/*   Updated: 2022/12/23 21:08:21 by mururoahh        ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,6 @@
 
 void	malloc_error(void);
 void	kill_error(void);
+void	arg_error(void);
 
 # endif
