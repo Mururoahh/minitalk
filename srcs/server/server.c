@@ -6,7 +6,7 @@
 /*   By: mururoahh <mururoahh@student.42lyon.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:26:43 by hferraud          #+#    #+#             */
-/*   Updated: 2022/12/23 21:25:47 by mururoahh        ###   ########lyon.fr   */
+/*   Updated: 2022/12/29 18:31:44 by mururoahh        ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	receive_size(size_t bit, t_msg_info *msg)
 		msg->msg = malloc(msg->msg_size * sizeof(char));
 		if (msg->msg == NULL)
 			malloc_error();
-		ft_bzero(msg->msg, sizeof(msg->msg));
+		ft_bzero(msg->msg, msg->msg_size * sizeof(char));
 	}
 	if (kill(msg->pid, SIGUSR1) == -1)
 		kill_error();
