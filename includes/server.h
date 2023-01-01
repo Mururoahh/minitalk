@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mururoahh <mururoahh@student.42lyon.fr>    +#+  +:+       +#+        */
+/*   By: hferraud <hferraud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:27:21 by hferraud          #+#    #+#             */
-/*   Updated: 2022/12/29 18:29:05 by mururoahh        ###   ########lyon.fr   */
+/*   Updated: 2023/01/01 23:30:28 by hferraud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include "ft_printf.h"
 # include "error.h"
 
-typedef struct	s_msg_info
+typedef struct s_msg_info
 {
 	pid_t	pid;
 	char	*msg;

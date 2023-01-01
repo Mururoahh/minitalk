@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mururoahh <mururoahh@student.42lyon.fr>    +#+  +:+       +#+        */
+/*   By: hferraud <hferraud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:26:43 by hferraud          #+#    #+#             */
-/*   Updated: 2022/12/29 18:31:44 by mururoahh        ###   ########lyon.fr   */
+/*   Updated: 2023/01/01 23:12:38 by hferraud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	print_message(t_msg_info *msg)
 {
-	pid_t pid_tmp;
-	
+	pid_t	pid_tmp;
+
 	pid_tmp = msg->pid;
 	write(1, msg->msg, msg->msg_size);
 	free(msg->msg);
@@ -50,8 +50,11 @@ void	receive_msg(unsigned char bit, t_msg_info *msg)
 	msg->byte_pos %= 8;
 	if (msg->msg_index == msg->msg_size)
 		print_message(msg);
-	else if (kill(msg->pid, SIGUSR1) == -1)
-		kill_error();
+	else
+	{
+		if (kill(msg->pid, SIGUSR1) == -1)
+			kill_error();
+	}
 }
 
 void	sig_listener(int sig, siginfo_t *info, void *uap)
@@ -70,7 +73,7 @@ void	sig_listener(int sig, siginfo_t *info, void *uap)
 			return ;
 		}
 	}
-	if (msg_info.pid == info->si_pid && info->si_code <= 0)
+	if (msg_info.pid == info->si_pid || info->si_pid == 0)
 	{
 		if (sig == SIGUSR1)
 			bit = 1;
@@ -79,9 +82,7 @@ void	sig_listener(int sig, siginfo_t *info, void *uap)
 		if (msg_info.bit_count < 32)
 			receive_size(bit, &msg_info);
 		else
-		{
 			receive_msg(bit, &msg_info);
-		}	
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mururoahh <mururoahh@student.42lyon.fr>    +#+  +:+       +#+        */
+/*   By: hferraud <hferraud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 15:23:05 by hferraud          #+#    #+#             */
-/*   Updated: 2022/12/23 21:43:53 by mururoahh        ###   ########lyon.fr   */
+/*   Updated: 2023/01/01 23:13:40 by hferraud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	send_size(pid_t dest, size_t size, int bit_pos)
 {
 	size >>= bit_pos;
 	g_msginf.size_bit_pos++;
-	//ft_printf("bit %d sended: %d\n", bit_pos, size & 1);
 	if (size & 1)
 	{
 		if (kill(dest, SIGUSR1) == -1)
@@ -51,29 +50,24 @@ void	send_message(pid_t dest, unsigned char bit)
 
 void	sig_listener(int sig, siginfo_t *info, void *uap)
 {
-
-	if (info->si_pid != g_msginf.pid && info->si_code <= 0)
-		return ;
 	(void)uap;
+	(void)info;
 	if (sig == SIGUSR2)
 	{
 		if (g_msginf.server_state == PENDING)
 			return ;
 		exit (0);
 	}
-	if (sig == SIGUSR1)
+	else
 	{
 		if (g_msginf.server_state == PENDING)
 			g_msginf.server_state = RESOLVED;
 		if (g_msginf.size_bit_pos < SIZE_SEND)
-			{
-				send_size(g_msginf.pid, g_msginf.size, g_msginf.size_bit_pos);
-			}
+			send_size(g_msginf.pid, g_msginf.size, g_msginf.size_bit_pos);
 		else
 			send_message(g_msginf.pid,
-			g_msginf.msg[g_msginf.index] >> g_msginf.msg_bit_pos);
+				g_msginf.msg[g_msginf.index] >> g_msginf.msg_bit_pos);
 	}
-			
 }
 
 int	main(int argc, char **argv)

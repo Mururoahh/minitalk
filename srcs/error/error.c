@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mururoahh <mururoahh@student.42lyon.fr>    +#+  +:+       +#+        */
+/*   By: hferraud <hferraud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 16:53:01 by hferraud          #+#    #+#             */
-/*   Updated: 2022/12/23 21:22:43 by mururoahh        ###   ########lyon.fr   */
+/*   Updated: 2023/01/01 23:30:55 by hferraud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
