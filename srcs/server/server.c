@@ -6,7 +6,7 @@
 /*   By: hferraud <hferraud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:26:43 by hferraud          #+#    #+#             */
-/*   Updated: 2023/01/01 23:12:38 by hferraud         ###   ########lyon.fr   */
+/*   Updated: 2023/01/02 13:55:33 by hferraud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,10 @@ void	sig_listener(int sig, siginfo_t *info, void *uap)
 	(void)uap;
 	if (msg_info.pid == 0)
 	{
-		if (info->si_pid && info->si_code <= 0)
-		{
-			msg_info.pid = info->si_pid;
-			if (kill(msg_info.pid, SIGUSR1) == -1)
-				kill_error();
-			return ;
-		}
+		msg_info.pid = info->si_pid;
+		if (kill(msg_info.pid, SIGUSR1) == -1)
+			kill_error();
+		return ;
 	}
 	if (msg_info.pid == info->si_pid || info->si_pid == 0)
 	{
@@ -96,8 +93,10 @@ int	main(void)
 	sigemptyset(&sact.sa_mask);
 	sact.sa_flags = SA_SIGINFO;
 	sact.sa_sigaction = sig_listener;
-	sigaction(SIGUSR1, &sact, NULL);
-	sigaction(SIGUSR2, &sact, NULL);
+	if (sigaction(SIGUSR1, &sact, NULL) == -1)
+		sigaction_error();
+	if (sigaction(SIGUSR2, &sact, NULL) == -1)
+		sigaction_error();
 	while (1)
 		;
 }

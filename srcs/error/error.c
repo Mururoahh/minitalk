@@ -6,7 +6,7 @@
 /*   By: hferraud <hferraud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 16:53:01 by hferraud          #+#    #+#             */
-/*   Updated: 2023/01/01 23:30:55 by hferraud         ###   ########lyon.fr   */
+/*   Updated: 2023/01/02 13:53:40 by hferraud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ void	malloc_error(void)
 void	kill_error(void)
 {
 	ft_putstr_fd("Kill Error\n", 2);
+	exit(1);
+}
+
+void	sigaction_error(void)
+{
+	ft_putstr_fd("Sigaction Error\n", 2);
 	exit(1);
 }
 

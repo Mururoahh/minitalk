@@ -6,16 +6,14 @@
 /*   By: hferraud <hferraud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 10:27:21 by hferraud          #+#    #+#             */
-/*   Updated: 2023/01/01 23:30:28 by hferraud         ###   ########lyon.fr   */
+/*   Updated: 2023/01/02 14:00:08 by hferraud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_H
 # define SERVER_H
 
-# include <unistd.h>
 # include <signal.h>
-# include <limits.h>
 # include "libft.h"
 # include "ft_printf.h"
 # include "error.h"
